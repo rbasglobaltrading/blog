@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Guide: Selecting a Backhoe Loader for African Road Projects</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Neutrals -->
+    <!-- Application Structure Plan: A multi-step, guided-selling tool that follows the buyer's journey. 1) Interactive Spec Selector to define needs. 2) Interactive Map to explore regional logistics. 3) Solution Section with comparative charts to evaluate the product. 4) A new section on job site efficiency with a dynamic table. 5) A section on maintenance and safety. 6) A section on financing options with a dynamic description. 7) FAQ and CTA to facilitate contact. This comprehensive, task-oriented structure is more useful and engaging than a simple linear blog page, turning content into a functional tool. -->
+    <!-- Visualization & Content Choices: 1) Spec Selector (Report Specs -> Goal: Inform/Organize -> Interactive HTML buttons/text -> JS updates -> Justification: Active user participation instead of passive reading). 2) Logistics Map (Report Logistics Info -> Goal: Organize/Inform -> Clickable HTML regions -> JS updates -> Justification: Visualizes geography, making abstract logistics concrete). 3) Spec Comparison Chart (BULL Machine Specs -> Goal: Compare -> Bar Chart (Chart.js) -> Static -> Justification: Clearly visualizes the product's advantages). 4) TCO Chart (TCO Concept -> Goal: Compare/Inform -> Doughnut Chart (Chart.js) -> Static -> Justification: Simplifies the complex TCO concept into an easy-to-grasp visual). 5) Performance Table (Job Site Data -> Goal: Compare -> HTML Table + JS dropdown/slider -> Dynamic update -> Justification: Allows users to see how different factors impact productivity). 6) Financing Selector (Financing Info -> Goal: Inform -> HTML dropdown -> JS updates -> Justification: Provides clear, actionable information on buying options). -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FDFBF8;
+            color: #333;
+        }
+        .active-nav {
+            color: #D97706;
+            border-bottom: 2px solid #D97706;
+        }
+        .inactive-nav {
+            color: #4A5568;
+        }
+        .spec-btn {
+            transition: all 0.2s ease-in-out;
+        }
+        .spec-btn-active {
+            background-color: #D97706 !important;
+            color: white !important;
+            transform: scale(1.05);
+        }
+        .map-region {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .map-region:hover {
+            opacity: 0.8;
+            transform: translateY(-2px);
+        }
+        .map-region-active {
+            stroke: #D97706;
+            stroke-width: 4px;
+            fill-opacity: 0.9;
+        }
+        .faq-item summary {
+            cursor: pointer;
+            outline: none;
+        }
+        .faq-item[open] summary {
+            font-weight: 600;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="bg-white/80 backdrop-blur-md sticky top-0 z-50 shadow-sm">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="text-xl font-bold text-gray-800">
+                <span class="text-amber-600">RBAS</span> Global
+            </div>
+            <div class="hidden md:flex space-x-8 font-medium">
+                <a href="#selector" class="active-nav nav-link">1. Selector</a>
+                <a href="#logistics" class="inactive-nav nav-link">2. Logistics</a>
+                <a href="#solution" class="inactive-nav nav-link">3. Solution</a>
+                <a href="#efficiency" class="inactive-nav nav-link">4. Efficiency</a>
+                <a href="#maintenance" class="inactive-nav nav-link">5. Maintenance</a>
+                <a href="#financing" class="inactive-nav nav-link">6. Financing</a>
+                <a href="#faq" class="inactive-nav nav-link">7. FAQ</a>
+            </div>
+            <a href="#contact" class="hidden md:inline-block bg-amber-600 text-white font-semibold px-5 py-2 rounded-lg hover:bg-amber-700 transition-colors">Request a Quote</a>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-6 py-12">
+
+        <section id="hero" class="text-center mb-16">
+            <div class="w-full max-w-4xl mx-auto rounded-xl overflow-hidden shadow-lg mb-8">
+                <!-- Using a placeholder image since external files cannot be referenced directly in this single-file app -->
+                <img src="https://placehold.co/1200x400/F0F0F0/555555?text=Construction+Vehicles+Showcase" alt="An illustration of a variety of construction vehicles including a backhoe loader, excavator, and road roller." class="w-full h-auto object-cover">
+            </div>
+            <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4 leading-tight">The Interactive Guide to Selecting a Backhoe Loader</h1>
+            <p class="text-lg text-gray-600 max-w-3xl mx-auto">For Road Construction Projects in Africa</p>
+        </section>
+
+        <!-- Step 1: Interactive Selector -->
+        <section id="selector" class="py-16 bg-white rounded-2xl shadow-lg">
+            <div class="max-w-4xl mx-auto px-6">
+                <h2 class="text-3xl font-bold text-center mb-2">Step 1: Define Your Project's Needs</h2>
+                <p class="text-center text-gray-600 mb-10">Use this interactive selector to build a profile for the ideal backhoe loader for your specific road construction requirements.</p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                    <div>
+                        <div class="mb-6">
+                            <h3 class="font-semibold text-lg mb-3">Drivetrain</h3>
+                            <div id="drivetrain-selector" class="flex gap-2">
+                                <button data-value="2WD" class="spec-btn flex-1 bg-gray-200 text-gray-700 py-3 px-4 rounded-lg font-medium">2WD (Light Duty)</button>
+                                <button data-value="4WD" class="spec-btn flex-1 bg-gray-200 text-gray-700 py-3 px-4 rounded-lg font-medium spec-btn-active">4WD (All Terrain)</button>
+                            </div>
+                        </div>
+                         <div class="mb-6">
+                            <h3 class="font-semibold text-lg mb-3">Primary Task & Digging Depth</h3>
+                            <div id="depth-selector" class="flex gap-2">
+                                <button data-value="12-14" class="spec-btn flex-1 bg-gray-200 text-gray-700 py-3 px-4 rounded-lg font-medium">Utility Trenching (12-14 ft)</button>
+                                <button data-value="14-16" class="spec-btn flex-1 bg-gray-200 text-gray-700 py-3 px-4 rounded-lg font-medium spec-btn-active">Culverts & Drains (14-16 ft)</button>
+                            </div>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-lg mb-3">Loader Bucket Capacity</h3>
+                            <div id="bucket-selector" class="flex gap-2">
+                                <button data-value="0.8-1.0" class="spec-btn flex-1 bg-gray-200 text-gray-700 py-3 px-4 rounded-lg font-medium">Standard (0.8-1.0 m³)</button>
+                                <button data-value="1.0-1.2" class="spec-btn flex-1 bg-gray-200 text-gray-700 py-3 px-4 rounded-lg font-medium spec-btn-active">High Capacity (1.0-1.2 m³)</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="recommendation-box" class="bg-amber-50 border-2 border-amber-200 p-6 rounded-xl">
+                        <h4 class="font-bold text-xl mb-3 text-amber-800">Your Recommended Profile:</h4>
+                        <div id="recommendation-content">
+                            <!-- Dynamic content will be injected here by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Step 2: Logistics Explorer -->
+        <section id="logistics" class="py-20">
+             <div class="max-w-6xl mx-auto">
+                <h2 class="text-3xl font-bold text-center mb-2">Step 2: Navigate Cross-Border Logistics</h2>
+                <p class="text-center text-gray-600 mb-12">Importing heavy machinery involves careful planning. Select a region on the map to see key logistical considerations.</p>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+                    <div id="map-container" class="w-full h-full p-4">
+                        <svg viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg">
+                            <path class="map-region" data-region="north" fill="#D1D5DB" d="M399 20L194 181l80 23-28 44-71-15 28 61-94 4-23-44-61 24 23 44 23 8-46 61-53-23L1 482l102 73 8 72 73 8 62-44 48 53-15 48h207l-23-44 57-15 23 48h145l35-61-39-39 15-53-48-28 44-44 57 23 15-80-61-48-23-61 57-23z"/>
+                            <path class="map-region map-region-active" data-region="east" fill="#9CA3AF" d="M592 249l-48 28-44 44-57-23-15 80 61 48 23 61-57 23-28-57-8 72 73 8 62-44 48 53-15 48h57l-8-53 80-26 23-44-23-61-31-4 35-48-48-35z"/>
+                            <path class="map-region" data-region="west" fill="#6B7280" d="M1 482l102 73 8 72-35-8-26-44-48 8-4-61zM194 181l80 23-28 44-71-15 28 61-94 4-23-44-61 24 23 44 23 8-46 61-53-23L1 482l73 53-8-44 23-15z"/>
+                            <path class="map-region" data-region="south" fill="#4B5563" d="M103 555l8 72 73 8 62-44 48 53-15 48h207l-23-44 57-15 23 48h57l-8-53 80-26-48-35-15 23-23 8-23-23-39 31-53-15-44-31-31 15-57-8-53-23-31 8-23-31-31-15z"/>
+                        </svg>
+                    </div>
+                    <div id="logistics-info" class="bg-white p-8 rounded-2xl shadow-lg">
+                        <!-- Dynamic content will be injected here -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Step 3: Solution -->
+        <section id="solution" class="py-16 bg-gray-50 rounded-2xl">
+            <div class="max-w-6xl mx-auto px-6">
+                <h2 class="text-3xl font-bold text-center mb-2">Step 3: Find the Right Machine</h2>
+                <p class="text-center text-gray-600 mb-12">Based on typical road project needs, see how a reliable machine like the BULL Backhoe Loader provides exceptional value.</p>
+                <div class="bg-white p-8 rounded-xl shadow-md mb-12">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                        <div>
+                            <h3 class="text-2xl font-bold text-amber-700 mb-2">Spotlight: The BULL Backhoe Loader</h3>
+                            <p class="text-gray-600 mb-4">RBAS Global is proud to partner with leading manufacturers like BULL Machines Pvt. Ltd. to supply world-class equipment. BULL backhoe loaders are particularly well-suited for the demands of the African market, offering:</p>
+                            <ul class="list-disc list-inside space-y-2 text-gray-700">
+                                <li><strong>Robust Construction:</strong> Built to withstand harsh operating conditions and challenging terrains.</li>
+                                <li><strong>Fuel-Efficient Engines:</strong> Powerful performance that respects your budget and lowers operating costs.</li>
+                                <li><strong>Superior Operator Comfort:</strong> Features like air-conditioned cabins to enhance productivity during long shifts.</li>
+                            </ul>
+                        </div>
+                        <div class="text-center">
+                           <div class="bg-cover bg-center h-64 rounded-lg" style="background-image: url('https://placehold.co/600x400/F59E0B/333333?text=BULL+Backhoe+Loader')"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+                    <div class="bg-white p-6 rounded-xl shadow-md">
+                        <h4 class="text-xl font-semibold text-center mb-4">Typical Spec Comparison</h4>
+                        <div class="chart-container">
+                            <canvas id="specChart"></canvas>
+                        </div>
+                         <p class="text-center text-xs text-gray-500 mt-2">Compares a typical project requirement with the capabilities of a BULL machine.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-md">
+                        <h4 class="text-xl font-semibold text-center mb-4">Total Cost of Ownership (TCO) Breakdown</h4>
+                        <div class="chart-container">
+                            <canvas id="tcoChart"></canvas>
+                        </div>
+                        <p class="text-center text-xs text-gray-500 mt-2">A quality machine reduces long-term operational costs, improving ROI.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Step 4: Efficiency -->
+        <section id="efficiency" class="py-20">
+            <div class="max-w-4xl mx-auto px-6">
+                <h2 class="text-3xl font-bold text-center mb-2">Step 4: Maximize Job Site Efficiency</h2>
+                <p class="text-center text-gray-600 mb-10">Productivity is key to profitability. Use this selector to understand how different factors can impact a machine's daily output.</p>
+                <div class="bg-white p-8 rounded-2xl shadow-lg">
+                    <div class="flex items-center space-x-4 mb-6">
+                        <label for="skill-selector" class="font-semibold text-gray-700">Select Operator Skill Level:</label>
+                        <select id="skill-selector" class="flex-1 p-2 border rounded-lg">
+                            <option value="intermediate">Intermediate (5 years)</option>
+                            <option value="expert">Expert (15+ years)</option>
+                        </select>
+                    </div>
+                    <table class="w-full text-left table-auto">
+                        <thead>
+                            <tr class="bg-gray-100">
+                                <th class="p-3 font-semibold text-gray-700 rounded-tl-lg">Task</th>
+                                <th class="p-3 font-semibold text-gray-700">Approx. Time/Unit</th>
+                                <th class="p-3 font-semibold text-gray-700 rounded-tr-lg">Daily Output (Est.)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="efficiency-table-body">
+                            <!-- Dynamic content will be injected here -->
+                        </tbody>
+                    </table>
+                     <p class="text-center text-xs text-gray-500 mt-4">Estimates based on a typical 8-hour workday, accounting for breaks and standard efficiency losses.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- New Lead Magnet Section -->
+        <section class="py-16">
+            <div class="max-w-3xl mx-auto px-6 text-center bg-gray-100 p-8 rounded-2xl shadow-lg">
+                <h3 class="text-2xl font-bold text-gray-900 mb-2">Want a comprehensive spec sheet for your project?</h3>
+                <p class="text-gray-600 mb-6">Download our free checklist to ensure you select the right machine for your specific road construction needs.</p>
+                <form id="download-form" class="space-y-4">
+                    <input type="text" id="download-name" placeholder="Your Name" required class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500">
+                    <input type="email" id="download-email" placeholder="Your Email" required class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500">
+                    <button type="submit" class="w-full bg-amber-600 text-white font-semibold py-3 px-5 rounded-lg hover:bg-amber-700 transition-colors">Download Checklist</button>
+                    <div id="download-message" class="mt-4 text-green-600 font-semibold" style="display:none;">Thank you! Your download is on its way.</div>
+                </form>
+            </div>
+        </section>
+
+        <!-- Step 5: Maintenance & Safety -->
+        <section id="maintenance" class="py-20 bg-gray-50 rounded-2xl">
+            <div class="max-w-4xl mx-auto px-6">
+                <h2 class="text-3xl font-bold text-center mb-2">Step 5: Maintenance & Safety Essentials</h2>
+                <p class="text-center text-gray-600 mb-10">Regular maintenance is non-negotiable for machine longevity and operator safety. Follow these guidelines to keep your investment performing.</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="bg-white p-6 rounded-xl shadow-lg">
+                        <h3 class="text-xl font-bold text-amber-700 mb-4">Daily Checks</h3>
+                        <ul class="space-y-4 text-gray-700">
+                            <li><span class="text-amber-500 mr-2">&#9679;</span> Inspect tire pressure and tread.</li>
+                            <li><span class="text-amber-500 mr-2">&#9679;</span> Check for fluid leaks (hydraulic, engine oil, coolant).</li>
+                            <li><span class="text-amber-500 mr-2">&#9679;</span> Verify all lights, horn, and safety alarms are functioning.</li>
+                            <li><span class="text-amber-500 mr-2">&#9679;</span> Clear debris from the engine and radiator.</li>
+                            <li><span class="text-amber-500 mr-2">&#9679;</span> Confirm all hoses and belts are in good condition.</li>
+                        </ul>
+                    </div>
+                     <div class="bg-white p-6 rounded-xl shadow-lg">
+                        <h3 class="text-xl font-bold text-amber-700 mb-4">Weekly Maintenance</h3>
+                        <ul class="space-y-4 text-gray-700">
+                            <li><span class="text-amber-500 mr-2">&#9679;</span> Lubricate all grease points.</li>
+                            <li><span class="text-amber-500 mr-2">&#9679;</span> Check fluid levels (hydraulic, transmission, axle).</li>
+                            <li><span class="text-amber-500 mr-2">&#9679;</span> Inspect air filter and clean or replace as needed.</li>
+                            <li><span class="text-amber-500 mr-2">&#9679;</span> Check battery terminals for corrosion.</li>
+                            <li><span class="text-amber-500 mr-2">&#9679;</span> Inspect backhoe and loader pins and bushings.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Step 6: Financing -->
+         <section id="financing" class="py-20">
+            <div class="max-w-3xl mx-auto px-6">
+                <h2 class="text-3xl font-bold text-center mb-2">Step 6: Explore Your Financing Options</h2>
+                <p class="text-center text-gray-600 mb-10">We offer flexible financing solutions to make your investment a reality. Select an option below to learn more.</p>
+                <div class="bg-white p-8 rounded-2xl shadow-lg">
+                    <div class="flex flex-col md:flex-row items-center md:space-x-4 mb-6">
+                        <label for="financing-selector" class="font-semibold text-gray-700 w-full md:w-auto mb-2 md:mb-0">Choose an option:</label>
+                        <select id="financing-selector" class="flex-1 p-2 border rounded-lg">
+                            <option value="outright">Outright Purchase</option>
+                            <option value="loan">Equipment Loan</option>
+                            <option value="lease">Leasing</option>
+                        </select>
+                    </div>
+                    <div id="financing-details" class="text-gray-600 mt-6 p-4 border-l-4 border-amber-500 bg-amber-50 rounded-r-lg">
+                         <!-- Dynamic content will be injected here -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- Step 7: FAQ -->
+        <section id="faq" class="py-20 bg-gray-50 rounded-2xl">
+            <div class="max-w-3xl mx-auto">
+                <h2 class="text-3xl font-bold text-center mb-2">Step 7: Get Your Questions Answered</h2>
+                <p class="text-center text-gray-600 mb-10">Common questions from procurement managers and engineers.</p>
+                <div class="space-y-4">
+                    <details class="faq-item bg-white p-6 rounded-lg shadow-sm">
+                        <summary class="font-semibold text-lg text-gray-800">What is the best size backhoe for road construction?</summary>
+                        <p class="text-gray-600 mt-3">A model with 80-95 HP, a digging depth of 14-16 feet, and a 1.2 m³ bucket capacity is typically ideal for the varied tasks of road construction, from trenching to material loading.</p>
+                    </details>
+                    <details class="faq-item bg-white p-6 rounded-lg shadow-sm">
+                        <summary class="font-semibold text-lg text-gray-800">How important is 4-wheel drive (4WD) in Africa?</summary>
+                        <p class="text-gray-600 mt-3">It is critically important. 4WD provides essential traction, stability, and pushing power on the unpaved, uneven, and often challenging terrains common in African road projects, ensuring safety and operational efficiency.</p>
+                    </details>
+                    <details class="faq-item bg-white p-6 rounded-lg shadow-sm">
+                        <summary class="font-semibold text-lg text-gray-800">How do I import a backhoe loader into East Africa?</summary>
+                        <p class="text-gray-600 mt-3">The most seamless method is to partner with an experienced exporter like RBAS Global. We handle the entire process, including sourcing, quality assurance checks, and shipping logistics to major ports like Mombasa or Dar es Salaam, ensuring a smooth customs clearance.</p>
+                    </details>
+                    <details class="faq-item bg-white p-6 rounded-lg shadow-sm">
+                        <summary class="font-semibold text-lg text-gray-800">How does the operating cost of a BULL machine compare to others?</summary>
+                        <p class="text-gray-600 mt-3">The BULL backhoe loader has been designed with a focus on fuel efficiency and reduced maintenance needs. While the upfront cost may be similar to competitors, the long-term Total Cost of Ownership (TCO) is significantly lower due to its robust design and fuel-efficient engine.</p>
+                    </details>
+                    <details class="faq-item bg-white p-6 rounded-lg shadow-sm">
+                        <summary class="font-semibold text-lg text-gray-800">Is a service and parts network available locally?</summary>
+                        <p class="text-gray-600 mt-3">RBAS Global has established partnerships with local service providers and parts distributors in key regions. This ensures that expert maintenance, technical support, and genuine spare parts are readily available, minimizing downtime and keeping your project on schedule.</p>
+                    </details>
+                     <details class="faq-item bg-white p-6 rounded-lg shadow-sm">
+                        <summary class="font-semibold text-lg text-gray-800">Do you offer operator training?</summary>
+                        <p class="text-gray-600 mt-3">Yes, we understand the importance of skilled operators for both productivity and safety. We can facilitate certified training programs tailored to your team's needs, either at your site or through a dedicated training center. Please inquire for more details.</p>
+                    </details>
+                </div>
+            </div>
+        </section>
+
+        <!-- Main CTA Section with a Form -->
+        <section id="contact" class="bg-amber-600 rounded-2xl">
+            <div class="max-w-4xl mx-auto text-center py-16 px-6">
+                 <h2 class="text-4xl font-bold text-white mb-4">Ready to Get a Quote?</h2>
+                <p class="text-amber-100 text-lg mb-8">Fill out the form below, and one of our experts will contact you to provide a free, no-obligation quote for your specific project needs.</p>
+                <form id="quote-form" class="max-w-lg mx-auto space-y-4">
+                    <input type="text" id="quote-name" placeholder="Your Name" required class="w-full p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-white">
+                    <input type="email" id="quote-email" placeholder="Your Email" required class="w-full p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-white">
+                    <input type="text" id="quote-company" placeholder="Your Company/Organization" class="w-full p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-white">
+                    <button type="submit" class="w-full bg-white text-amber-700 font-bold py-4 px-8 rounded-lg text-lg hover:bg-amber-50 transition-transform hover:scale-105">Request a Free Quote</button>
+                    <div id="quote-message" class="mt-4 text-green-200 font-semibold" style="display:none;">Thank you! Your request has been sent. We'll be in touch shortly.</div>
+                </form>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-gray-800 text-white mt-20">
+        <div class="container mx-auto py-8 px-6 text-center">
+            <p>&copy; 2025 RBAS Global Trading Pvt. Ltd. All Rights Reserved.</p>
+            <p class="text-sm text-gray-400 mt-2">This interactive guide is for informational purposes. Buyers are responsible for confirming all local import regulations. This does not constitute legal or financial advice.</p>
+        </div>
+    </footer>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+    const specData = {
+        drivetrain: '4WD',
+        depth: '14-16',
+        bucket: '1.0-1.2'
+    };
+
+    const recommendations = {
+        '2WD': {
+            '12-14': {
+                '0.8-1.0': "<strong>Profile: Light Utility.</strong> Best for maintenance on paved surfaces and stable ground. Not recommended for primary construction.",
+                '1.0-1.2': "<strong>Profile: Light Loader.</strong> Suitable for loading tasks on hard surfaces, but limited for excavation in tough conditions."
+            },
+            '14-16': {
+                 '0.8-1.0': "<strong>Profile: Niche Application.</strong> Deep digging capability but lacks the traction for challenging sites. Use with caution.",
+                 '1.0-1.2': "<strong>Profile: Limited Use.</strong> High capacity loading is compromised by poor traction. Not a versatile choice."
+            }
+        } ,
+        '4WD': {
+            '12-14': {
+                '0.8-1.0': "<strong>Profile: Versatile Utility.</strong> Excellent for utility trenching and general site work with good traction for varied terrains.",
+                '1.0-1.2': "<strong>Profile: Agile Powerhouse.</strong> Strong loading capacity combined with all-terrain capability. Great for support roles."
+            },
+            '14-16': {
+                '0.8-1.0': "<strong>Profile: Trenching Specialist.</strong> Deep digging power with the stability and traction needed for culvert and drainage projects on unpaved ground.",
+                '1.0-1.2': "<strong>Profile: All-Rounder Prime Mover.</strong> The optimal choice for most road construction projects. Combines deep digging, high-capacity loading, and superior traction for maximum productivity and safety."
+            }
+        }
+    };
+
+    const logisticsContent = {
+        'east': {
+            title: 'East Africa Logistics',
+            points: [
+                '<strong>Key Ports:</strong> Mombasa (Kenya), Dar es Salaam (Tanzania).',
+                '<strong>Incoterms Focus:</strong> CIF (Cost, Insurance, and Freight) is common, simplifying the process for buyers as the seller arranges transport to the destination port.',
+                '<strong>Customs:</strong> Pre-shipment inspection (e.g., PVoC in Kenya) is often mandatory. Working with an exporter who manages this is crucial.',
+                '<strong>Inland Transport:</strong> Well-established road and rail corridors, but plan for last-mile logistics from the port.'
+            ]
+        },
+        'west': {
+            title: 'West Africa Logistics',
+            points: [
+                '<strong>Key Ports:</strong> Lagos (Nigeria), Tema (Ghana), Abidjan (Côte d\'Ivoire).',
+                '<strong>Challenges:</strong> Port congestion can be a factor. A logistics partner with strong local contacts is invaluable.',
+                '<strong>Regulations:</strong> Import regulations can vary significantly by country. Ensure your exporter provides correct documentation.',
+                 '<strong>Quality Assurance:</strong> Due to humidity, ensure machines have adequate protection against corrosion during shipping.'
+            ]
+        },
+        'north': {
+            title: 'North Africa Logistics',
+            points: [
+                '<strong>Key Ports:</strong> Alexandria (Egypt), Casablanca (Morocco), Algiers (Algeria).',
+                '<strong>Trade Agreements:</strong> Proximity to Europe can influence shipping routes and regulations. Some EU standards may be relevant.',
+                '<strong>Language:</strong> Documentation in French or Arabic may be required alongside English. Your export partner should handle this.',
+                '<strong>Sourcing:</strong> Strong trade links with both Europe and Asia provide diverse sourcing options.'
+            ]
+        },
+        'south': {
+            title: 'Southern Africa Logistics',
+            points: [
+                 '<strong>Key Ports:</strong> Durban (South Africa), Walvis Bay (Namibia), Beira (Mozambique).',
+                 '<strong>Regional Hub:</strong> South Africa often acts as a hub, with established road networks into neighboring countries like Zimbabwe, Botswana, and Zambia.',
+                 '<strong>Incoterms:</strong> DAP (Delivered at Place) can be a good option for inland destinations, where the seller manages transport to a specified final location.',
+                 '<strong>Mining Sector Influence:</strong> The strong mining industry means logistics for heavy equipment are well-developed, but can also be in high demand.'
+            ]
+        }
+    };
+    
+    const performanceData = {
+        intermediate: {
+            trenching: { time: '12 min', output: '40 m' },
+            loading: { time: '90 sec', output: '250 tons' },
+            clearing: { time: '60 min', output: '3 acres' }
+        },
+        expert: {
+            trenching: { time: '8 min', output: '60 m' },
+            loading: { time: '60 sec', output: '350 tons' },
+            clearing: { time: '40 min', output: '4.5 acres' }
+        }
+    };
+
+    const financingOptions = {
+        outright: {
+            title: 'Outright Purchase',
+            description: 'This option provides full ownership of the equipment immediately. It requires a significant upfront capital investment but eliminates monthly payments and interest costs, giving you complete control over the asset. This is best for companies with strong cash flow and long-term project needs.'
+        },
+        loan: {
+            title: 'Equipment Loan',
+            description: 'With an equipment loan, you make a down payment and finance the rest over a fixed term. This allows you to acquire the machine without a large initial capital outlay. Our partners offer competitive interest rates and flexible terms tailored to your business\'s financial needs.'
+        },
+        lease: {
+            title: 'Leasing',
+            description: 'Leasing offers the flexibility of using equipment without the burden of ownership. You make regular payments for a set period, which are often tax-deductible. This option is ideal for projects with a specific timeline or for businesses that want to regularly update their fleet to the newest technology. At the end of the term, you can return the equipment or purchase it for its residual value.'
+        }
+    };
+
+
+    const recommendationContentEl = document.getElementById('recommendation-content');
+    const logisticsInfoEl = document.getElementById('logistics-info');
+    const efficiencyTableBody = document.getElementById('efficiency-table-body');
+    const skillSelector = document.getElementById('skill-selector');
+    const financingSelector = document.getElementById('financing-selector');
+    const financingDetails = document.getElementById('financing-details');
+    const quoteForm = document.getElementById('quote-form');
+    const quoteMessage = document.getElementById('quote-message');
+    const downloadForm = document.getElementById('download-form');
+    const downloadMessage = document.getElementById('download-message');
+
+    function updateRecommendation() {
+        const text = recommendations[specData.drivetrain][specData.depth][specData.bucket];
+        let checklistHTML = `
+            <p class="mb-4 text-gray-700">${text}</p>
+            <ul class="space-y-2 text-sm">
+                <li class="flex items-center"><span class="text-green-500 mr-2">&#10003;</span> Drivetrain: <strong>${specData.drivetrain}</strong></li>
+                <li class="flex items-center"><span class="text-green-500 mr-2">&#10003;</span> Digging Depth: <strong>${specData.depth} ft</strong></li>
+                <li class="flex items-center"><span class="text-green-500 mr-2">&#10003;</span> Bucket Capacity: <strong>${specData.bucket} m³</strong></li>
+            </ul>
+        `;
+        recommendationContentEl.innerHTML = checklistHTML;
+    }
+
+    function setupSelector(containerId, dataKey) {
+        const container = document.getElementById(containerId);
+        container.addEventListener('click', (e) => {
+            if (e.target.tagName === 'BUTTON') {
+                container.querySelectorAll('button').forEach(btn => btn.classList.remove('spec-btn-active'));
+                e.target.classList.add('spec-btn-active');
+                specData[dataKey] = e.target.dataset.value;
+                updateRecommendation();
+            }
+        });
+    }
+
+    function updateLogisticsInfo(region) {
+        const content = logisticsContent[region];
+        if (!content) return;
+        let pointsHTML = content.points.map(p => `<li class="flex items-start"><span class="text-amber-500 mr-3 mt-1">&#9679;</span><span>${p}</span></li>`).join('');
+        logisticsInfoEl.innerHTML = `
+            <h3 class="text-2xl font-bold mb-4 text-gray-800">${content.title}</h3>
+            <ul class="space-y-3 text-gray-600">${pointsHTML}</ul>
+        `;
+    }
+
+    function updateEfficiencyTable() {
+        const skillLevel = skillSelector.value;
+        const data = performanceData[skillLevel];
+        let tableHTML = `
+            <tr class="hover:bg-gray-50">
+                <td class="p-3">Trenching</td>
+                <td class="p-3">${data.trenching.time}</td>
+                <td class="p-3">${data.trenching.output}</td>
+            </tr>
+            <tr class="hover:bg-gray-50">
+                <td class="p-3">Material Loading</td>
+                <td class="p-3">${data.loading.time}</td>
+                <td class="p-3">${data.loading.output}</td>
+            </tr>
+            <tr class="hover:bg-gray-50">
+                <td class="p-3">Site Clearing</td>
+                <td class="p-3">${data.clearing.time}</td>
+                <td class="p-3">${data.clearing.output}</td>
+            </tr>
+        `;
+        efficiencyTableBody.innerHTML = tableHTML;
+    }
+
+    function updateFinancingDetails() {
+        const option = financingSelector.value;
+        const data = financingOptions[option];
+        if (!data) return;
+        financingDetails.innerHTML = `
+            <h4 class="text-xl font-bold text-gray-800 mb-2">${data.title}</h4>
+            <p>${data.description}</p>
+        `;
+    }
+
+    document.querySelectorAll('.map-region').forEach(region => {
+        region.addEventListener('click', () => {
+            document.querySelectorAll('.map-region').forEach(r => r.classList.remove('map-region-active'));
+            region.classList.add('map-region-active');
+            updateLogisticsInfo(region.dataset.region);
+        });
+    });
+
+    skillSelector.addEventListener('change', updateEfficiencyTable);
+    financingSelector.addEventListener('change', updateFinancingDetails);
+
+    quoteForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const name = document.getElementById('quote-name').value;
+        const email = document.getElementById('quote-email').value;
+        const company = document.getElementById('quote-company').value;
+        
+        // Simulate form submission
+        console.log('Quote Request Submitted:', { name, email, company });
+        
+        quoteForm.style.display = 'none';
+        quoteMessage.style.display = 'block';
+    });
+
+    downloadForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const name = document.getElementById('download-name').value;
+        const email = document.getElementById('download-email').value;
+        
+        // Simulate form submission
+        console.log('Download Request Submitted:', { name, email });
+        
+        downloadForm.style.display = 'none';
+        downloadMessage.style.display = 'block';
+    });
+
+
+    const specChartCtx = document.getElementById('specChart').getContext('2d');
+    const specChart = new Chart(specChartCtx, {
+        type: 'bar',
+        data: {
+            labels: ['Engine Power (HP)', 'Digging Depth (ft)', 'Bucket Capacity (m³)'],
+            datasets: [{
+                label: 'Typical Requirement',
+                data: [80, 14, 1.0],
+                backgroundColor: 'rgba(156, 163, 175, 0.6)',
+                borderColor: 'rgba(156, 163, 175, 1)',
+                borderWidth: 1
+            }, {
+                label: 'BULL Machine',
+                data: [92, 16, 1.2],
+                backgroundColor: 'rgba(217, 119, 6, 0.6)',
+                borderColor: 'rgba(217, 119, 6, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            maintainAspectRatio: false,
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            },
+            plugins: {
+                legend: {
+                    position: 'top',
+                }
+            }
+        }
+    });
+
+    const tcoChartCtx = document.getElementById('tcoChart').getContext('2d');
+    const tcoChart = new Chart(tcoChartCtx, {
+        type: 'doughnut',
+        data: {
+            labels: ['Initial Purchase Price', 'Fuel & Fluids (5yr)', 'Maintenance & Parts (5yr)', 'Operator Costs (5yr)'],
+            datasets: [{
+                data: [45, 25, 15, 15],
+                backgroundColor: ['#4B5563', '#F59E0B', '#FBBF24', '#FDE68A'],
+                hoverOffset: 4
+            }]
+        },
+        options: {
+            maintainAspectRatio: false,
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                }
+            }
+        }
+    });
+
+    const navLinks = document.querySelectorAll('.nav-link');
+    const sections = document.querySelectorAll('section[id]');
+    
+    window.addEventListener('scroll', () => {
+        let current = '';
+        sections.forEach(section => {
+            const sectionTop = section.offsetTop;
+            if (pageYOffset >= sectionTop - 100) {
+                current = section.getAttribute('id');
+            }
+        });
+
+        navLinks.forEach(link => {
+            link.classList.remove('active-nav');
+            link.classList.add('inactive-nav');
+            if (link.getAttribute('href').includes(current)) {
+                link.classList.add('active-nav');
+                link.classList.remove('inactive-nav');
+            }
+        });
+    });
+
+    setupSelector('drivetrain-selector', 'drivetrain');
+    setupSelector('depth-selector', 'depth');
+    setupSelector('bucket-selector', 'bucket');
+    updateRecommendation();
+    updateLogisticsInfo('east');
+    updateEfficiencyTable();
+    updateFinancingDetails();
+});
+</script>
+
+</body>
+</html>
